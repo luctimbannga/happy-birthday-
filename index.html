@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gửi Hora - Chúc Mừng Sinh Nhật</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --image-url: url('https://i.ibb.co/rRNtWkcS/file-00000000fb9462089715cc83e271623b-1.png');
+    --gold-color: #ffd700;
+    --text-color: #fff;
+    --fade-duration: 2s; /* Thời gian mờ dần/hiện ra */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color);
+    background: #000;
+    position: relative;
+}
+
+/* NỀN ẢNH - giữ rõ nét hơn và có chiều sâu */
+.background-image {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: var(--image-url) center/cover no-repeat fixed;
+    filter: brightness(0.7) contrast(1.1) saturate(1.1); 
+    transform: scale(1.05);
+    animation: zoomBg 15s ease-in-out infinite alternate;
+    z-index: 1;
+}
+@keyframes zoomBg {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.15); }
+}
+
+/* Lớp phủ mềm giúp chữ dễ đọc */
+.overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.2), rgba(0,0,0,0.75));
+    z-index: 2;
+    transition: opacity var(--fade-duration) ease-in-out; /* Thêm hiệu ứng chuyển đổi cho overlay */
+}
+
+/* Container chính */
+.container {
+    text-align: center;
+    padding: 20px 20px; 
+    max-width: 90%;
+    width: 600px;
+    position: relative;
+    z-index: 10;
+    transition: opacity var(--fade-duration) ease-in-out, transform 1s ease-out; /* Thêm hiệu ứng chuyển đổi cho container */
+    
+    /* Đảm bảo nội dung không tràn viewport */
+    max-height: 95vh;
+    overflow-y: auto; 
+    
+    /* Trạng thái ban đầu của animation hiện diện */
+    opacity: 0; 
+    transform: translateY(30px);
+}
+
+/* Class hiển thị nội dung (áp dụng qua JS) */
+.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Class ẩn nội dung (áp dụng qua JS) */
+.hidden {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Chữ */
+.title-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5em;
+    color: var(--gold-color);
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    text-shadow: 0 0 15px rgba(255,215,0,0.8), 0 0 5px #000; 
+    margin-bottom: 5px; 
+}
+.date-sub {
+    color: #fff;
+    font-size: 1.1em;
+    margin-bottom: 25px; 
+    border-bottom: 1px solid var(--gold-color);
+    padding-bottom: 6px; 
+    text-shadow: 0 0 8px rgba(0,0,0,1); 
+}
+.message p {
+    font-size: 1.2em;
+    line-height: 1.6; 
+    margin-bottom: 15px; 
+    text-shadow: 0 0 8px rgba(0,0,0,1); 
+}
+.highlight {
+    color: var(--gold-color);
+    font-weight: bold;
+}
+.signature {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.6em;
+    margin-top: 30px; 
+    text-shadow: 0 0 10px rgba(0,0,0,1);
+}
+
+/* --- HIỆU ỨNG (Giữ nguyên) --- */
+.rose-petal, .gold-dust, .candle-sparkle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+}
+.rose-petal { background: rgba(255,182,193,0.8); width: 12px; height: 12px; animation: fall 8s linear infinite; z-index: 5; }
+@keyframes fall {
+    0% { transform: translateY(-10%) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(110vh) translateX(var(--x)); opacity: 0; }
+}
+.gold-dust { background: var(--gold-color); width: 2px; height: 2px; animation: rise 6s ease-out infinite; z-index: 4; }
+@keyframes rise {
+    0% { transform: translateY(0); opacity: 0; }
+    20% { opacity: 0.8; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+.candle-sparkle { background: #fff8b0; width: 6px; height: 6px; box-shadow: 0 0 15px 5px rgba(255,255,150,0.9); animation: sparkle 3s ease-in-out infinite; }
+@keyframes sparkle {
+    0%,100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.6); }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .title-main { font-size: 2.8em; letter-spacing: 4px; }
+    .date-sub { font-size: 1em; }
+    .message p { font-size: 1.05em; line-height: 1.5; }
+    .signature { font-size: 1.5em; }
+    .container { padding: 15px 15px; }
+}
+</style>
+</head>
+<body>
+
+<div class="background-image"></div>
+<div class="overlay"></div>
+
+<div class="container" id="messageContainer">
+    <h1 class="title-main">H O R A</h1>
+    <h2 class="date-sub">21.10 - CHÚC MỪNG SINH NHẬT HORA</h2>
+
+    <div class="message">
+        <p>Có những mảnh ký ức, dù thời gian trôi đi, vẫn vẹn nguyên như ngày đầu. Ngày sinh nhật em, đối với anh, vẫn là một trong số đó. Anh vẫn luôn nhớ, và trong khoảnh khắc này, thầm nghĩ về những điều đã qua.</p>
+        <p>Hơn tất thảy, điều anh mong mỏi nhất là thấy em đã tìm thấy bến đỗ bình yên, nơi hạnh phúc em xứng đáng thuộc về. Nhìn em rạng rỡ bên gia đình nhỏ, đó cũng là một niềm an ủi trong dòng chảy cuộc đời.</p>
+        <p>Từ một góc nhỏ của ký ức, anh xin gửi lời cầu chúc chân thành và dịu dàng nhất: <span class="highlight">Chúc em mỗi ngày trôi qua đều là những khoảnh khắc an lành, và mãi mãi hạnh phúc trọn vẹn bên những người thân yêu, Hora nhé.</span></p>
+    </div>
+
+    <p class="signature">Người đã từng thương.</p>
+</div>
+
+<script>
+const roseCount = 35, dustCount = 25, sparkleCount = 15;
+const container = document.getElementById('messageContainer');
+const overlay = document.querySelector('.overlay');
+
+// --- CÁC THAM SỐ THỜI GIAN (Đơn vị milliseconds) ---
+const DISPLAY_TIME = 15000; // 15 giây hiển thị
+const FADE_TIME = 2000;    // 2 giây mờ dần
+const IDLE_TIME = 20000;   // 20 giây chỉ còn ảnh nền
+// Tổng chu kỳ: 15s + 2s + 20s = 37s
+
+function showMessage() {
+    // 1. Hiện nội dung và lớp phủ (mở lớp phủ 0.75)
+    container.classList.remove('hidden');
+    container.classList.add('visible');
+    overlay.style.opacity = 1;
+    
+    // 2. Thiết lập thời gian để bắt đầu ẩn (sau 15 giây)
+    setTimeout(hideMessage, DISPLAY_TIME);
+}
+
+function hideMessage() {
+    // 3. Ẩn nội dung và làm trong suốt lớp phủ (giảm lớp phủ về 0.0)
+    container.classList.remove('visible');
+    container.classList.add('hidden');
+    overlay.style.opacity = 0; // Để ảnh nền rõ nhất khi không có chữ
+    
+    // 4. Thiết lập thời gian để bắt đầu chu kỳ mới (sau thời gian nghỉ + thời gian mờ dần)
+    setTimeout(showMessage, IDLE_TIME + FADE_TIME);
+}
+
+// Khởi tạo các hiệu ứng động (giữ nguyên)
+function initializeEffects() {
+    for (let i=0; i<roseCount; i++){
+        const r=document.createElement('div');
+        r.className='rose-petal';
+        r.style.left=Math.random()*100+'vw';
+        r.style.animationDelay=Math.random()*5+'s';
+        r.style.setProperty('--x',(Math.random()-0.5)*200+'px');
+        document.body.appendChild(r);
+    }
+    for (let i=0; i<dustCount; i++){
+        const g=document.createElement('div');
+        g.className='gold-dust';
+        g.style.left=Math.random()*100+'vw';
+        g.style.bottom=Math.random()*10+'vh';
+        g.style.animationDelay=Math.random()*5+'s';
+        document.body.appendChild(g);
+    }
+    for (let i=0; i<sparkleCount; i++){
+        const s=document.createElement('div');
+        s.className='candle-sparkle';
+        s.style.left=Math.random()*100+'vw';
+        s.style.top=Math.random()*100+'vh';
+        s.style.animationDelay=Math.random()*3+'s';
+        document.body.appendChild(s);
+    }
+}
+
+window.onload = () => {
+    initializeEffects();
+    // Bắt đầu chu kỳ tin nhắn ngay lập tức
+    showMessage(); 
+};
+</script>
+</body>
+</html>
