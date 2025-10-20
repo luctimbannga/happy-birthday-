@@ -6,11 +6,12 @@
 <title>Gửi Hora - Chúc Mừng Sinh Nhật</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,400;1,700&display=swap" rel="stylesheet">
 <style>
+/* (CSS giữ nguyên như phiên bản cuối cùng) */
 :root {
     --image-url: url('https://i.ibb.co/rRNtWkcS/file-00000000fb9462089715cc83e271623b-1.png');
     --gold-color: #ffd700;
     --text-color: #fff;
-    --fade-duration: 2s; /* Thời gian mờ dần/hiện ra */
+    --fade-duration: 2s; 
 }
 
 body {
@@ -27,7 +28,6 @@ body {
     position: relative;
 }
 
-/* NỀN ẢNH - giữ rõ nét hơn và có chiều sâu */
 .background-image {
     position: fixed;
     top: 0; left: 0;
@@ -43,7 +43,6 @@ body {
     to { transform: scale(1.15); }
 }
 
-/* Lớp phủ mềm giúp chữ dễ đọc */
 .overlay {
     position: fixed;
     top: 0; left: 0;
@@ -53,7 +52,6 @@ body {
     transition: opacity var(--fade-duration) ease-in-out; 
 }
 
-/* Container chính */
 .container {
     text-align: center;
     padding: 20px 20px; 
@@ -62,27 +60,22 @@ body {
     position: relative;
     z-index: 10;
     transition: opacity var(--fade-duration) ease-in-out, transform 1s ease-out; 
-    
     max-height: 95vh;
     overflow-y: auto; 
-    
     opacity: 0; 
     transform: translateY(30px);
 }
 
-/* Class hiển thị nội dung (áp dụng qua JS) */
 .visible {
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Class ẩn nội dung (áp dụng qua JS) */
 .hidden {
     opacity: 0;
     transform: translateY(30px);
 }
 
-/* Chữ */
 .title-main {
     font-family: 'Cormorant Garamond', serif;
     font-size: 3.5em;
@@ -118,7 +111,6 @@ body {
     text-shadow: 0 0 10px rgba(0,0,0,1);
 }
 
-/* --- HIỆU ỨNG (Giữ nguyên) --- */
 .rose-petal, .gold-dust, .candle-sparkle {
     position: absolute;
     border-radius: 50%;
@@ -142,7 +134,6 @@ body {
     50% { opacity: 1; transform: scale(1.6); }
 }
 
-/* Responsive */
 @media (max-width: 600px) {
     .title-main { font-size: 2.8em; letter-spacing: 4px; }
     .date-sub { font-size: 1em; }
@@ -155,7 +146,7 @@ body {
 <body>
 
 <audio id="background-music" loop autoplay controls hidden>
-    <source src="https://drive.google.com/uc?export=download&id=1I55azyu4oE6oe55-VC4LWoVYlxedbAWS" type="audio/mp3">
+    <source src="hora2110.mp3" type="audio/mp3">
     Trình duyệt của bạn không hỗ trợ thẻ audio.
 </audio>
 
@@ -179,9 +170,8 @@ body {
 const roseCount = 35, dustCount = 25, sparkleCount = 15;
 const container = document.getElementById('messageContainer');
 const overlay = document.querySelector('.overlay');
-const music = document.getElementById('background-music'); // Lấy element nhạc
+const music = document.getElementById('background-music');
 
-// --- CÁC THAM SỐ THỜI GIAN (Đơn vị milliseconds) ---
 const DISPLAY_TIME = 10000; 
 const FADE_TIME = 2000;    
 const IDLE_TIME = 15000;   
@@ -227,16 +217,15 @@ function initializeEffects() {
     }
 }
 
+// LOGIC PHÁT NHẠC KHI CÓ TƯƠNG TÁC (Touch/Click)
 function startAudioOnInteraction() {
-    // Thêm Listener cho cả click (chuột) và touchstart (chạm trên di động)
     const playAudio = () => {
         if (music.paused) {
             music.play().then(() => {
-                // Nếu phát thành công, gỡ bỏ các listeners
                 document.body.removeEventListener('click', playAudio);
                 document.body.removeEventListener('touchstart', playAudio);
             }).catch(e => {
-                console.log("Audio play blocked or failed:", e);
+                console.log("Audio play still blocked or failed:", e);
             });
         }
     };
@@ -244,7 +233,6 @@ function startAudioOnInteraction() {
     document.body.addEventListener('click', playAudio, false);
     document.body.addEventListener('touchstart', playAudio, false);
     
-    // Thử phát ngay lập tức (vẫn cần thiết cho desktop)
     music.play().catch(e => console.log("Attempted audio play, awaiting user interaction."));
 }
 
@@ -252,7 +240,7 @@ function startAudioOnInteraction() {
 window.onload = () => {
     initializeEffects();
     showMessage(); 
-    startAudioOnInteraction(); // Kích hoạt logic phát nhạc
+    startAudioOnInteraction();
 };
 </script>
 </body>
