@@ -155,7 +155,7 @@ body {
 <body>
 
 <audio id="background-music" loop autoplay controls hidden>
-    <source src="https://raw.githubusercontent.com/luctimbannga/happy-birthday-/raw/refs/heads/main/hora2110.mp3" type="audio/mp3">
+    <source src="https://drive.google.com/uc?export=download&id=1I55azyu4oE6oe55-VC4LWoVYlxedbAWS" type="audio/mp3">
     Trình duyệt của bạn không hỗ trợ thẻ audio.
 </audio>
 
@@ -182,9 +182,9 @@ const overlay = document.querySelector('.overlay');
 const music = document.getElementById('background-music'); // Lấy element nhạc
 
 // --- CÁC THAM SỐ THỜI GIAN (Đơn vị milliseconds) ---
-const DISPLAY_TIME = 10000; // 10 giây hiển thị
-const FADE_TIME = 2000;    // 2 giây mờ dần
-const IDLE_TIME = 15000;   // 15 giây chỉ còn ảnh nền
+const DISPLAY_TIME = 10000; 
+const FADE_TIME = 2000;    
+const IDLE_TIME = 15000;   
 
 function showMessage() {
     container.classList.remove('hidden');
@@ -200,7 +200,6 @@ function hideMessage() {
     setTimeout(showMessage, IDLE_TIME + FADE_TIME);
 }
 
-// Khởi tạo các hiệu ứng động
 function initializeEffects() {
     for (let i=0; i<roseCount; i++){
         const r=document.createElement('div');
@@ -228,17 +227,25 @@ function initializeEffects() {
     }
 }
 
-// Hàm kích hoạt nhạc nền khi có tương tác (rất quan trọng cho di động)
 function startAudioOnInteraction() {
-    // Bắt đầu phát nhạc khi có tương tác đầu tiên (ví dụ: click/tap)
-    document.addEventListener('click', function() {
+    // Thêm Listener cho cả click (chuột) và touchstart (chạm trên di động)
+    const playAudio = () => {
         if (music.paused) {
-            music.play().catch(e => console.log("Audio play blocked:", e));
+            music.play().then(() => {
+                // Nếu phát thành công, gỡ bỏ các listeners
+                document.body.removeEventListener('click', playAudio);
+                document.body.removeEventListener('touchstart', playAudio);
+            }).catch(e => {
+                console.log("Audio play blocked or failed:", e);
+            });
         }
-    }, { once: true });
+    };
+
+    document.body.addEventListener('click', playAudio, false);
+    document.body.addEventListener('touchstart', playAudio, false);
     
-    // Thử phát nhạc ngay lập tức (sẽ thành công trên desktop, có thể bị chặn trên mobile)
-    music.play().catch(e => console.log("Attempted audio play, awaiting interaction."));
+    // Thử phát ngay lập tức (vẫn cần thiết cho desktop)
+    music.play().catch(e => console.log("Attempted audio play, awaiting user interaction."));
 }
 
 
