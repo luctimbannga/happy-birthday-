@@ -101,10 +101,9 @@ body {
     text-shadow: 0 0 8px rgba(0,0,0,1); 
 }
 .message p {
-    /* Điều chỉnh font-size lớn hơn một chút vì chữ đã ít hơn */
     font-size: 1.3em; 
     line-height: 1.6; 
-    margin-bottom: 20px; /* Tăng margin cho các đoạn văn ngắn hơn */
+    margin-bottom: 20px; 
     text-shadow: 0 0 8px rgba(0,0,0,1); 
 }
 .highlight {
@@ -147,7 +146,7 @@ body {
 @media (max-width: 600px) {
     .title-main { font-size: 2.8em; letter-spacing: 4px; }
     .date-sub { font-size: 1em; }
-    .message p { font-size: 1.2em; line-height: 1.5; } /* Điều chỉnh cho điện thoại */
+    .message p { font-size: 1.2em; line-height: 1.5; } 
     .signature { font-size: 1.5em; }
     .container { padding: 15px 15px; }
 }
@@ -155,12 +154,17 @@ body {
 </head>
 <body>
 
+<audio id="background-music" loop autoplay controls hidden>
+    <source src="https://raw.githubusercontent.com/luctimbannga/happy-birthday-/raw/refs/heads/main/hora2110.mp3" type="audio/mp3">
+    Trình duyệt của bạn không hỗ trợ thẻ audio.
+</audio>
+
 <div class="background-image"></div>
 <div class="overlay"></div>
 
 <div class="container" id="messageContainer">
     <h1 class="title-main">H O R A</h1>
-    <h2 class="date-sub">21.10 - CHÚC MỪNG SINH NHẬT EM</h2>
+    <h2 class="date-sub">21.10 - CHÚC MỪNG SINH NHẬT HORA</h2>
 
     <div class="message">
         <p>Có những mảnh ký ức, dù thời gian trôi đi, vẫn vẹn nguyên như ngày đầu. Ngày sinh nhật này, anh vẫn luôn nhớ và thầm nghĩ về em.</p>
@@ -175,31 +179,24 @@ body {
 const roseCount = 35, dustCount = 25, sparkleCount = 15;
 const container = document.getElementById('messageContainer');
 const overlay = document.querySelector('.overlay');
+const music = document.getElementById('background-music'); // Lấy element nhạc
 
 // --- CÁC THAM SỐ THỜI GIAN (Đơn vị milliseconds) ---
-// Có thể giảm thời gian hiển thị vì chữ ít hơn
 const DISPLAY_TIME = 10000; // 10 giây hiển thị
 const FADE_TIME = 2000;    // 2 giây mờ dần
 const IDLE_TIME = 15000;   // 15 giây chỉ còn ảnh nền
-// Tổng chu kỳ: 10s + 2s + 15s = 27s
 
 function showMessage() {
-    // 1. Hiện nội dung và lớp phủ (mở lớp phủ 0.75)
     container.classList.remove('hidden');
     container.classList.add('visible');
     overlay.style.opacity = 1;
-    
-    // 2. Thiết lập thời gian để bắt đầu ẩn
     setTimeout(hideMessage, DISPLAY_TIME);
 }
 
 function hideMessage() {
-    // 3. Ẩn nội dung và làm trong suốt lớp phủ (giảm lớp phủ về 0.0)
     container.classList.remove('visible');
     container.classList.add('hidden');
     overlay.style.opacity = 0; 
-    
-    // 4. Thiết lập thời gian để bắt đầu chu kỳ mới (sau thời gian nghỉ + thời gian mờ dần)
     setTimeout(showMessage, IDLE_TIME + FADE_TIME);
 }
 
@@ -231,10 +228,24 @@ function initializeEffects() {
     }
 }
 
+// Hàm kích hoạt nhạc nền khi có tương tác (rất quan trọng cho di động)
+function startAudioOnInteraction() {
+    // Bắt đầu phát nhạc khi có tương tác đầu tiên (ví dụ: click/tap)
+    document.addEventListener('click', function() {
+        if (music.paused) {
+            music.play().catch(e => console.log("Audio play blocked:", e));
+        }
+    }, { once: true });
+    
+    // Thử phát nhạc ngay lập tức (sẽ thành công trên desktop, có thể bị chặn trên mobile)
+    music.play().catch(e => console.log("Attempted audio play, awaiting interaction."));
+}
+
+
 window.onload = () => {
     initializeEffects();
-    // Bắt đầu chu kỳ tin nhắn ngay lập tức
     showMessage(); 
+    startAudioOnInteraction(); // Kích hoạt logic phát nhạc
 };
 </script>
 </body>
